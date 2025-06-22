@@ -26,7 +26,7 @@ resource "aws_subnet" "nb-subnet" {
   cidr_block        = each.value.subnet_range
   availability_zone = each.value.availability_zone
   tags = {
-    "Name" = each.value.subnet_name
+    "Name" = each.key
     "Type" = each.value.type
   }
 }
@@ -50,12 +50,16 @@ locals {
     for key, subnet in var.subnet : aws_subnet.nb-subnet[key].id
     if subnet.type == "public"
   ]
+  private_subnet_ids = [
+    for key, subnet in var.subnet : aws_subnet.nb-subnet[key].id
+    if subnet.type == "private"
+  ]
 }
 
 resource "aws_nat_gateway" "nb-nat-gw" {
   depends_on        = [aws_eip.nb-eip-nat-gw]
   allocation_id     = aws_eip.nb-eip-nat-gw.id
-  subnet_id         = local.public_subnet_ids
+  subnet_id         = local.public_subnet_ids[0]
   connectivity_type = "public"
   tags = {
     "Name" : var.natgw_name
@@ -77,8 +81,12 @@ output "vpc_id" {
   value = aws_vpc.nb-chatgpt-vpc.id
 }
 
-output "subnet_id" {
-  value = aws_subnet.nb-subnet.id
+output "public_subnet_id" {
+  value = local.public_subnet_ids
+}
+
+output "private_subnet_id" {
+  value = local.private_subnet_ids
 }
 
 output "nat_gateway_public_ip" {

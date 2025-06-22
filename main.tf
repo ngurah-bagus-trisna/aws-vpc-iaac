@@ -77,6 +77,16 @@ resource "aws_route_table" "net-public" {
   }
 }
 
+resource "aws_route_table_association" "public" {
+  subnet_id      = aws_subnet.nb-subnet["public-net"].id
+  route_table_id = aws_route_table.net-public["public"].id
+}
+
+resource "aws_route_table_association" "private" {
+  subnet_id      = aws_subnet.nb-subnet["private-net"].id
+  route_table_id = aws_route_table.net-public["private"].id
+}
+
 output "vpc_id" {
   value = aws_vpc.nb-chatgpt-vpc.id
 }

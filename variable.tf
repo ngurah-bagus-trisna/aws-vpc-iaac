@@ -4,10 +4,10 @@ variable "vpc_cidr" {
 
 variable "subnet" {
   type = map(object({
-    subnet_name = string
-    subnet_range = string
+    subnet_name       = string
+    subnet_range      = string
     availability_zone = string
-    type = string
+    type              = string
   }))
 }
 
@@ -18,10 +18,10 @@ variable "natgw_name" {
 variable "route_tables" {
   type = map(
     object({
-      route_name = string
-      cidr_source = string
+      route_name        = string
+      cidr_source       = string
       route_destination = string
-      type = string
+      type              = string
     })
   )
 }

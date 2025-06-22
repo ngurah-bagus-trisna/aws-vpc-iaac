@@ -20,10 +20,10 @@ resource "aws_vpc" "nb-chatgpt-vpc" {
 }
 
 resource "aws_subnet" "nb-subnet" {
-  vpc_id = aws_vpc.nb-chatgpt-vpc.id
+  vpc_id   = aws_vpc.nb-chatgpt-vpc.id
   for_each = var.subnet
 
-  cidr_block = each.value.subnet_range
+  cidr_block        = each.value.subnet_range
   availability_zone = each.value.availability_zone
   tags = {
     "Name" = each.value.subnet_name
@@ -41,7 +41,7 @@ resource "aws_internet_gateway" "nb-inet-gw" {
 
 resource "aws_eip" "nb-eip-nat-gw" {
   tags = {
-    "Name" = "nb-eip-nat-gw" 
+    "Name" = "nb-eip-nat-gw"
   }
 }
 
@@ -53,23 +53,23 @@ locals {
 }
 
 resource "aws_nat_gateway" "nb-nat-gw" {
-  depends_on = [ aws_eip.nb-eip-nat-gw ]
-  allocation_id = aws_eip.nb-eip-nat-gw.id
-  subnet_id = local.public_subnet_ids
+  depends_on        = [aws_eip.nb-eip-nat-gw]
+  allocation_id     = aws_eip.nb-eip-nat-gw.id
+  subnet_id         = local.public_subnet_ids
   connectivity_type = "public"
   tags = {
-    "Name": var.natgw_name
+    "Name" : var.natgw_name
   }
 }
 
 resource "aws_route_table" "net-public" {
   for_each = var.route_tables
-  vpc_id = aws_vpc.nb-chatgpt-vpc.id
-  
+  vpc_id   = aws_vpc.nb-chatgpt-vpc.id
+
   route {
-    cidr_block = each.value.cidr_source
-    gateway_id = each.value.route_destination == "igw" ? aws_internet_gateway.nb-inet-gw.id : null
-    nat_gateway_id = each.value.route_destination == "nat"  ?aws_nat_gateway.nb-nat-gw.id : null
+    cidr_block     = each.value.cidr_source
+    gateway_id     = each.value.route_destination == "igw" ? aws_internet_gateway.nb-inet-gw.id : null
+    nat_gateway_id = each.value.route_destination == "nat" ? aws_nat_gateway.nb-nat-gw.id : null
   }
 }
 

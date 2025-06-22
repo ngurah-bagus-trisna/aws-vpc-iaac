@@ -1,0 +1,27 @@
+# Terraform state
+*.tfstate
+*.tfstate.*
+
+# Backup
+*.backup
+
+# Crash log
+crash.log
+
+# Sensitive plan
+*.tfplan
+
+# .terraform folder (cached modules & providers)
+.terraform/
+
+# Override files
+terraform.tfvars
+terraform.tfvars.json
+
+# CLI config (optional, kalau lo pakai)
+.terraformrc
+terraform.rc
+
+# Lock file (optional kalau bukan tim)
+# Tapi kalau kolaborasi, jangan di-ignore biar provider-nya konsisten
+# terraform.lock.hcl

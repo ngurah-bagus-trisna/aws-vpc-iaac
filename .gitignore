@@ -25,3 +25,6 @@ terraform.rc
 # Lock file (optional kalau bukan tim)
 # Tapi kalau kolaborasi, jangan di-ignore biar provider-nya konsisten
 # terraform.lock.hcl
+
+# secret tfvars
+secret.tfvars

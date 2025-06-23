@@ -30,3 +30,11 @@ variable "db_credentials" {
   })
   sensitive = true
 }
+
+variable "instance" {
+  type = map(object({
+    ami           = string
+    instance_type = string
+    subnet        = string
+  }))
+}

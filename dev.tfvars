@@ -24,3 +24,16 @@ route_tables = {
     route_destination = "igw"
   }
 }
+
+instance = {
+  "web-private" = {
+    ami           = "ami-02c7683e4ca3ebf58"
+    instance_type = "t2.micro"
+    subnet        = "private-net"
+  },
+  "web-public" = {
+    ami           = "ami-02c7683e4ca3ebf58"
+    instance_type = "t2.micro"
+    subnet        = "public-net"
+  }
+}

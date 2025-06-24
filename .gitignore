@@ -28,3 +28,6 @@ terraform.rc
 
 # secret tfvars
 secret.tfvars
+
+lambda/*
+!lambda/app.py

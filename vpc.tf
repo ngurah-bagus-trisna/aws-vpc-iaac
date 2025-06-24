@@ -39,7 +39,7 @@ resource "aws_eip" "nb-eip-nat-gw" {
 resource "aws_nat_gateway" "nb-nat-gw" {
   depends_on        = [aws_eip.nb-eip-nat-gw]
   allocation_id     = aws_eip.nb-eip-nat-gw.id
-  subnet_id         = aws_subnet.nb-subnet["private-net-1"].id
+  subnet_id         = aws_subnet.nb-subnet["public-net"].id
   connectivity_type = "public"
   tags = {
     "Name" : var.natgw_name
@@ -110,4 +110,11 @@ resource "aws_vpc_security_group_ingress_rule" "allow-access-ssh" {
   to_port           = 22
   from_port         = 22
   ip_protocol       = "tcp"
+}
+
+resource "aws_vpc_security_group_egress_rule" "allow-access-public" {
+  depends_on        = [aws_security_group.web-sg]
+  security_group_id = aws_security_group.web-sg.id
+  cidr_ipv4         = "0.0.0.0/0"
+  ip_protocol       = "-1" # -1 means all protocols
 }
